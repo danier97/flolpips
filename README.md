@@ -3,7 +3,7 @@
 ### Duolikun Danier, Fan Zhang, David Bull
 
 
-[Project](https://danielism97.github.io/FloLPIPS) | [Paper](TODO)
+[Project](https://danielism97.github.io/FloLPIPS) | [arXiv](https://arxiv.org/abs/2207.08119)
 
 
 ## Dependencies
@@ -28,17 +28,15 @@ res = calc_flolpips(dis_video, ref_video)
 ```
 
 
-<!-- ## Citation
+## Citation
 ```
-@InProceedings{Danier_2022_CVPR,
-    author    = {Danier, Duolikun and Zhang, Fan and Bull, David},
-    title     = {ST-MFNet: A Spatio-Temporal Multi-Flow Network for Frame Interpolation},
-    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
-    month     = {June},
-    year      = {2022},
-    pages     = {3521-3531}
+@article{danier2022flolpips,
+  title={FloLPIPS: A Bespoke Video Quality Metric for Frame Interpoation},
+  author={Danier, Duolikun and Zhang, Fan and Bull, David},
+  journal={arXiv preprint arXiv:2207.08119},
+  year={2022}
 }
-``` -->
+```
 
 ## Acknowledgement
 Lots of code in this repository are adapted/taken from the following repositories:
