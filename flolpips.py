@@ -21,7 +21,7 @@ def mw_spatial_average(in_tens, flow, keepdim=True):
     _,_,h,w = in_tens.shape
     flow = F.interpolate(flow, (h,w), align_corners=False, mode='bilinear')
     flow_mag = torch.sqrt(flow[:,0:1]**2 + flow[:,1:2]**2)
-    flow_mag = flow_mag / torch.sum(flow_mag)
+    flow_mag = flow_mag / torch.sum(flow_mag, dim=[1,2,3], keepdim=True)
     return torch.sum(in_tens*flow_mag, dim=[2,3],keepdim=keepdim)
 
 
