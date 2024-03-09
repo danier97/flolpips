@@ -342,3 +342,35 @@ def calc_flolpips(dis_path, ref_path):
     os.remove('flolpips_ref.yuv')
 
     return np.mean(flolpips_list)
+
+
+class Flolpips(nn.Module):
+    def __init__(self):
+        super(Flolpips, self).__init__()
+        self.loss_fn = FloLPIPS(net='alex',version='0.1')
+        self.flownet = PWCNet()
+    
+    @torch.no_grad()
+    def forward(self, I0, I1, frame_dis, frame_ref):
+        """
+        args:
+            I0: first frame of the triplet, shape: [B, C, H, W]
+            I1: third frame of the triplet, shape: [B, C, H, W]
+            frame_dis: prediction of the intermediate frame, shape: [B, C, H, W]
+            frame_ref: ground-truth of the intermediate frame, shape: [B, C, H, W]
+        """
+        assert I0.size() == I1.size() == frame_dis.size() == frame_ref.size(), \
+                "the 4 input tensors should have same size"
+
+        flow_ref = self.flownet(frame_ref, I0)
+        flow_dis = self.flownet(frame_dis, I0)
+        flow_diff = flow_ref - flow_dis
+        flolpips_wrt_I0 = self.loss_fn.forward(frame_ref, frame_dis, flow_diff, normalize=True)
+
+        flow_ref = self.flownet(frame_ref, I1)
+        flow_dis = self.flownet(frame_dis, I1)
+        flow_diff = flow_ref - flow_dis
+        flolpips_wrt_I1 = self.loss_fn.forward(frame_ref, frame_dis, flow_diff, normalize=True)
+
+        flolpips = (flolpips_wrt_I0 + flolpips_wrt_I1) / 2
+        return flolpips
