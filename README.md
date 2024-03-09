@@ -20,11 +20,29 @@ The following packages were used to evaluate the model.
 
 
 ## Usage
+### Video-based Evaluation
 ```python
 from flolpips import calc_flolpips
 ref_video = '<path to the reference>.mp4'
 dis_video = '<path to the distorted>.mp4'
 res = calc_flolpips(dis_video, ref_video)
+```
+
+### Triplet Frame-based Evalation
+```python
+from flolpips import Flolpips
+import torch
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+eval_metric = Flolpips().to(device)
+
+batch = 8
+I0 = torch.rand(8, 3, 256, 448).to(device) # first frame of the triplet
+I1 = torch.rand(8, 3, 256, 448).to(device) # third frame of the triplet
+frame_dis = torch.rand(8, 3, 256, 448).to(device) # prediction of the intermediate frame
+frame_ref = torch.rand(8, 3, 256, 448).to(device) # ground-truth of the intermediate frame
+
+flolpips = eval_metric.forward(I0, I1, frame_dis, frame_ref)
 ```
 
 
